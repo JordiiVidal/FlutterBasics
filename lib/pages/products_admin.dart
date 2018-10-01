@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '../product_manager.dart';
-import 'products_admin.dart';
+import 'home.dart';
 
-class HomePage extends StatelessWidget {
+class ProductsAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
       drawer: Drawer(
-        //drawwer left side - endrawer right side / Multiple items use scrollable
         child: Column(
           children: <Widget>[
             AppBar(
@@ -15,19 +14,21 @@ class HomePage extends StatelessWidget {
               title: Text('Choose'),
             ),
             ListTile(
-              title: Text('User Page'),
-              onTap: () => Navigator.pushReplacement(
+              title: Text('Home Page'),
+              onTap: () => Navigator.pushReplacement(//Queremos remplazar el scaffold solamente manteniendolo en el stack
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ProductsAdminPage())),
+                      builder: (BuildContext context) => HomePage())),
             )
           ],
         ),
       ),
       appBar: AppBar(
-        title: Text('BuyList'),
+        title: Text('User'),
       ),
-      body: ProductManager(),
+      body: Center(
+        child: Text('User Page'),
+      ),
     );
   }
 }
