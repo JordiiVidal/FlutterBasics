@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light, //default exists dark
           primarySwatch: Colors.deepOrange, //static properties
           accentColor: Colors.purple),
-      home: AuthPage()
+      home: AuthPage(),
     );
   }
 }
