@@ -16,10 +16,7 @@ class HomePage extends StatelessWidget {
             ),
             ListTile(
               title: Text('User Page'),
-              onTap: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => ProductsAdminPage())),
+              onTap: () => Navigator.pushReplacementNamed(context, '/amdin'),
             )
           ],
         ),
