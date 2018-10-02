@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import './products.dart';
 import './product_control.dart';
 
-class ProductManager extends StatefulWidget {
-  final Map startngProduct;
+class ProductManager extends StatelessWidget {
+  final List<Map<String,String>>products;
+  final Function addProduct;
+  final Function deleteProduct;
+
+  ProductManager(this.products,this.addProduct,this.deleteProduct);
+  /*final Map startngProduct;
 
   ProductManager({this.startngProduct}) {
     //optional argument
@@ -19,7 +24,6 @@ class ProductManager extends StatefulWidget {
 
 class _ProductManagerState extends State<ProductManager> {
   List<Map<String, String>> _products = [];
-
   @override //called cuando el object creado inicializado
   void initState() {
     //execute when state is created
@@ -51,7 +55,7 @@ class _ProductManagerState extends State<ProductManager> {
       _products.removeAt(index);
       print(_products);
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +65,7 @@ class _ProductManagerState extends State<ProductManager> {
         Container(
           margin: EdgeInsets.all(10.0),
           child: ProductControl(
-              _addProducts), /*queremos pasar solamente la referencia de la funcion*/
+              addProduct), /*queremos pasar solamente la referencia de la funcion*/
           /*Debemos crear un widgets propios para elementos importantes que necesitan perssonalizar i muchas caracteristicas product_control
            RaisedButton(
             color: Theme.of(context).primaryColor,
@@ -78,9 +82,9 @@ class _ProductManagerState extends State<ProductManager> {
         Expanded(
             //List view tiene que ir dentro de un container si queremos personalizar-lo si queremos que ocupe todo el espacio restante Expanded Widget
             //height: 350.0,//px
-            child: Products(_products,
+            child: Products(products,
                 deleteProduct:
-                    _deleteProducts)) //llamamaos a la clase de products.dart con la list para crear la card
+                    deleteProduct)) //llamamaos a la clase de products.dart con la list para crear la card
       ],
     );
   }

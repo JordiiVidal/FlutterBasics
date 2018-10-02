@@ -20,11 +20,7 @@ class ProductsAdminPage extends StatelessWidget {
               ),
               ListTile(
                 title: Text('Porduct Admin'),
-                onTap: () => Navigator.pushReplacement(
-                    //Queremos remplazar el scaffold solamente manteniendolo en el stack
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => HomePage())),
+                onTap: () => Navigator.pushReplacementNamed(context, '/'),
               )
             ],
           ),

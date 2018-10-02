@@ -4,6 +4,6 @@ class ProductListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(child: Text('asa'));
+    return Center(child: Text('asa'));
   }
 }
