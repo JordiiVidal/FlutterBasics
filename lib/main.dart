@@ -23,9 +23,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, String>> _products = [];
+  List<Map<String, dynamic>> _products = [];
 
-  void _addProduct(Map<String, String> product) {
+  void _addProduct(Map<String, dynamic> product) {
     //use dynamic <dynamic>
     setState(() {
       _products.add(product);
@@ -50,9 +50,8 @@ class _MyAppState extends State<MyApp> {
           accentColor: Colors.purple),
       //home: AuthPage(), Home argunment la pagina que primero veremos la podemos cambiar por la ruta /
       routes: {
-        '/': (BuildContext context) => HomePage(_products, _addProduct,
-            _deleteProduct), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
-        '/admin': (BuildContext context) => ProductsAdminPage(),
+        '/': (BuildContext context) => HomePage(_products), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
+        '/admin': (BuildContext context) => ProductsAdminPage(_addProduct,_deleteProduct),
       }, //executed whemn we navigate to a named rout solo se ejecutara cuando no este en el registro routes
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
@@ -69,8 +68,7 @@ class _MyAppState extends State<MyApp> {
         }
       },//Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui
       onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(builder: (BuildContext context) => HomePage(_products, _addProduct,
-            _deleteProduct));
+        return MaterialPageRoute(builder: (BuildContext context) => HomePage(_products));
       },
     );
   }

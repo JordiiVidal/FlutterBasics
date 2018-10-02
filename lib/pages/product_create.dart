@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ProductCreatPage extends StatefulWidget {
+  final Function addProduct;
+  final Function deleteProduct;
+
+  ProductCreatPage(this.addProduct, this.deleteProduct);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -46,6 +51,18 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
               setState(() {
                 priceValue = double.parse(value);
               });
+            },
+          ),
+          RaisedButton(
+            child: Text('SAVE'),
+            onPressed: () {
+              final Map<String, dynamic> product = {
+                'title': titleValue,
+                'description': descriptionValue,
+                'price': priceValue,
+                'image':'assets/richarlison.jpg'
+              };
+              widget.addProduct(product);
             },
           ),
           //Text(titleValue),

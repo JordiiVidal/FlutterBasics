@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import './pages/product.dart';
+
 
 class Products extends StatelessWidget {
-  final List<Map<String,String>> products;
-  final Function deleteProduct;
+  final List<Map<String, dynamic>> products;
+
   //final cada vez que se llame al constructor remplazara la lista i nunca cambiara
-  Products(this.products, {this.deleteProduct}) {
+  Products(this.products) {
     //can't be change this list, can't add
     print('[products]constructor');
   } //constructor
@@ -20,12 +20,11 @@ class Products extends StatelessWidget {
             FlatButton(
               //button without cbackground only text
               child: Text("Details"),
-              onPressed: () => Navigator.pushNamed<bool>(context,'/product/'+ index.toString()).then((bool value) {//promise javascript
-                    print(value);
-                    if(value){
-                      deleteProduct(index);
-                    }
-                  }), //use => one line code //navigation es como un stack que tienes que hacer push del scaffold para poder vnavegar
+              onPressed: () => Navigator.pushNamed<bool>(
+                  context,
+                  '/product/' +
+                      index
+                          .toString()), //use => one line code //navigation es como un stack que tienes que hacer push del scaffold para poder vnavegar
             ),
             FlatButton(
               child: Text("Details 2"),
