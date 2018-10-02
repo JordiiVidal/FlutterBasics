@@ -17,7 +17,7 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
     // TODO: implement build
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: Column(
+      child: ListView(
         children: <Widget>[
           //autofocus que cuando se inicialize la page salga el teclado
           //onCganged trigger que cada vez que cambia
