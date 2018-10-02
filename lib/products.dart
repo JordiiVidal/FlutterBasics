@@ -20,7 +20,7 @@ class Products extends StatelessWidget {
             FlatButton(
               //button without cbackground only text
               child: Text("Details"),
-              onPressed: () => Navigator.pushNamed<bool>(context,'/product/'+ index.toString()).then((bool value) {//promise avascript
+              onPressed: () => Navigator.pushNamed<bool>(context,'/product/'+ index.toString()).then((bool value) {//promise javascript
                     print(value);
                     if(value){
                       deleteProduct(index);

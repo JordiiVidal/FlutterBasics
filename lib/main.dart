@@ -67,6 +67,10 @@ class _MyAppState extends State<MyApp> {
                 _products[index]['title'], _products[index]['image']),
           );
         }
+      },//Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui
+      onUnknownRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: (BuildContext context) => HomePage(_products, _addProduct,
+            _deleteProduct));
       },
     );
   }
