@@ -29,6 +29,16 @@ class HomePage extends StatelessWidget {
         title: Text('BuyList'),
       ),
       body: ProductManager(products),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+        onPressed: () {},
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.yellow,
+        child: Container(height: 50.0),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
