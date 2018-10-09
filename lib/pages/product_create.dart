@@ -14,9 +14,9 @@ class ProductCreatPage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatPage> {
-  String titleValue;
-  String descriptionValue;
-  double priceValue = 0.0;
+  String _titleValue;
+  String _descriptionValue;
+  double _priceValue = 0.0;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -31,7 +31,7 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
                 /*icon: Icon(Icons.link)*/ labelText: 'Product Title'),
             onChanged: (String value) {
               setState(() {
-                titleValue = value;
+                _titleValue = value;
               });
             },
           ),
@@ -40,7 +40,7 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
             decoration: InputDecoration(labelText: 'Product Description'),
             onChanged: (String value) {
               setState(() {
-                descriptionValue = value;
+                _descriptionValue = value;
               });
             },
           ),
@@ -49,20 +49,24 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
             keyboardType: TextInputType.number,
             onChanged: (String value) {
               setState(() {
-                priceValue = double.parse(value);
+                _priceValue = double.parse(value);
               });
             },
           ),
+          SizedBox(height: 10.0,),
           RaisedButton(
             child: Text('SAVE'),
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
             onPressed: () {
               final Map<String, dynamic> product = {
-                'title': titleValue,
-                'description': descriptionValue,
-                'price': priceValue,
+                'title': _titleValue,
+                'description': _descriptionValue,
+                'price': _priceValue,
                 'image':'assets/richarlison.jpg'
               };
               widget.addProduct(product);
+              Navigator.pushReplacementNamed(context, '/roducts');
             },
           ),
           //Text(titleValue),

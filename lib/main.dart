@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './pages/products_admin.dart';
 import './pages/home.dart';
 import './pages/product.dart';
+import './pages/auth.dart';
 
 //import 'package:flutter/rendering.dart';
 
@@ -50,7 +51,8 @@ class _MyAppState extends State<MyApp> {
           accentColor: Colors.purple),
       //home: AuthPage(), Home argunment la pagina que primero veremos la podemos cambiar por la ruta /
       routes: {
-        '/': (BuildContext context) => HomePage(_products), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
+        '/': (BuildContext context) => AuthPage(), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
+        '/products': (BuildContext context) => HomePage(_products), 
         '/admin': (BuildContext context) => ProductsAdminPage(_addProduct,_deleteProduct),
       }, //executed whemn we navigate to a named rout solo se ejecutara cuando no este en el registro routes
       onGenerateRoute: (RouteSettings settings) {
