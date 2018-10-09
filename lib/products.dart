@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class Products extends StatelessWidget {
   final List<Map<String, dynamic>> products;
 
@@ -12,10 +11,51 @@ class Products extends StatelessWidget {
 
   Widget _buildProductItem(BuildContext context, int index) {
     return Card(
+      margin: EdgeInsets.all(10.0),
       child: Column(
         children: <Widget>[
           Image.asset(products[index]['image']),
-          Text(products[index]['title']),
+          //SizedBox(height: 10.0),
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  products[index]['title'],
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Oswald'),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 10.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 3.0),
+                  child: Text(
+                    '\$${products[index]['price'].toString()}',
+                    style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontFamily: 'Oswald'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 1.5),
+                borderRadius: BorderRadius.circular(9.0)),
+            child: Text(
+              'Palau Solita, Barcelona',
+              style: TextStyle(fontSize: 13.0),
+            ),
+          ),
           ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
             FlatButton(
               //button without cbackground only text

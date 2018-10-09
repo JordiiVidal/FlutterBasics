@@ -46,6 +46,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       //debugShowMaterialGrid: true,//tool grid for design
       theme: ThemeData(
+        fontFamily: 'Oswald',
           brightness: Brightness.light, //default exists dark
           primarySwatch: Colors.deepOrange, //static properties
           accentColor: Colors.purple),
