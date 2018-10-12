@@ -11,6 +11,7 @@ class Products extends StatelessWidget {
 
   Widget _buildProductItem(BuildContext context, int index) {
     return Card(
+      color: Colors.white.withOpacity(0.7),
       margin: EdgeInsets.all(10.0),
       child: Column(
         children: <Widget>[
@@ -21,26 +22,34 @@ class Products extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  products[index]['title'],
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Oswald'),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.0),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 3.0),
+                Flexible(
+                  flex: 2,
                   child: Text(
-                    '\$${products[index]['price'].toString()}',
+                    products[index]['title'],
                     style: TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 25.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
                         fontFamily: 'Oswald'),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.0),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.0, vertical: 3.0),
+                    child: Text(
+                      '\$${products[index]['price'].toString()}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'Oswald'),
+                    ),
                   ),
                 ),
               ],
@@ -56,19 +65,25 @@ class Products extends StatelessWidget {
               style: TextStyle(fontSize: 13.0),
             ),
           ),
-          ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
-            FlatButton(
+          ButtonBar(
+            alignment: MainAxisAlignment.center, 
+            children: <Widget>[
+            IconButton(
               //button without cbackground only text
-              child: Text("Details"),
+              icon: Icon(Icons.info),
+              color: Theme.of(context).accentColor,
               onPressed: () => Navigator.pushNamed<bool>(
                   context,
                   '/product/' +
                       index
                           .toString()), //use => one line code //navigation es como un stack que tienes que hacer push del scaffold para poder vnavegar
             ),
-            FlatButton(
-              child: Text("Details 2"),
-              onPressed: () => {},
+            IconButton(
+              icon: Icon(Icons.star_border),
+              color: Colors.red,
+              onPressed: () => {
+
+              },
             )
           ]) //Multiple buttons size by size
         ],

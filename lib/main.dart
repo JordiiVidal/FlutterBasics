@@ -4,10 +4,10 @@ import './pages/home.dart';
 import './pages/product.dart';
 import './pages/auth.dart';
 
-//import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
-  /*debugPaintSizeEnabled = true;//whitout debugging
+    /*debugPaintSizeEnabled = true;//whitout debugging
     debugPaintBaselinesEnabled = true;
     debugPaintPointersEnabled = true;
     debugPaintSizeEnabled = true;*/
@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
           final int index = int.parse(pathElements[2]); // /products/1
           return MaterialPageRoute<bool>(
             builder: (BuildContext context) => ProductPage(
-                _products[index]['title'], _products[index]['image']),
+                _products[index]['title'], _products[index]['image'],_products[index]['description']),
           );
         }
       },//Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui

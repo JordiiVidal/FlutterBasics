@@ -19,69 +19,89 @@ class _AuthPage extends State<AuthPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Login'),
-        ),
-        body: Container(
-          margin: EdgeInsets.all(10.0),
-          child: ListView(
-            children: <Widget>[
-              TextField(
-                decoration: InputDecoration(
-                    /*icon: Icon(Icons.link)*/ labelText: 'E-mail'),
-                keyboardType: TextInputType.emailAddress,
-                onChanged: (String value) {
-                  setState(() {
-                    _emailValue = value;
-                  });
-                },
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                ),
-                obscureText: true,
-                onChanged: (String value) {
-                  setState(() {
-                    _pswdValue = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Switch(
-                value: true,
-                activeColor: Colors.pink,
-                activeTrackColor: Colors.grey,
-                onChanged: (bool value) {},
-              ),
-              SwitchListTile(
-                title: Text('Accept Terms'),
-                value: _acceptTerms,
-                activeColor: Colors.pink,
-                onChanged: (bool value) {
-                  setState(() {
-                    _acceptTerms = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              RaisedButton(
-                color: Theme.of(context).primaryColorDark,
-                textColor: Colors.white,
-                child: Text('login'),
-                onPressed: () {
-                  //Navigator siempre que se quiera cambiar de pagina(always)
-                  print(_pswdValue);
-                  print(_emailValue);
-                  Navigator.pushReplacementNamed(context, '/products');
-                },
-              )
-            ],
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover, //zoom
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.2), BlendMode.dstATop),
+            image: AssetImage('assets/background.jpg'),
           ),
-        ));
+        ),
+        padding: EdgeInsets.all(10.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      /*icon: Icon(Icons.link)*/ labelText: 'E-mail'),
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (String value) {
+                    setState(() {
+                      _emailValue = value;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Password',
+                  ),
+                  obscureText: true,
+                  onChanged: (String value) {
+                    setState(() {
+                      _pswdValue = value;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Switch(
+                  value: true,
+                  activeColor: Colors.pink,
+                  activeTrackColor: Colors.grey,
+                  onChanged: (bool value) {},
+                ),
+                SwitchListTile(
+                  title: Text('Accept Terms'),
+                  value: _acceptTerms,
+                  activeColor: Colors.pink,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _acceptTerms = value;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                RaisedButton(
+                  color: Theme.of(context).primaryColorDark,
+                  textColor: Colors.white,
+                  child: Text('login'),
+                  onPressed: () {
+                    //Navigator siempre que se quiera cambiar de pagina(always)
+                    print(_pswdValue);
+                    print(_emailValue);
+                    Navigator.pushReplacementNamed(context, '/products');
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

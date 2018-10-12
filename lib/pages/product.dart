@@ -4,8 +4,9 @@ import 'dart:async';
 class ProductPage extends StatelessWidget {
   final String title;
   final String imageUrl;
+  final String description;
 
-  ProductPage(this.title, this.imageUrl);
+  ProductPage(this.title, this.imageUrl, this.description);
 
   _showWarningDialog(BuildContext context) {
     return showDialog(
@@ -15,14 +16,15 @@ class ProductPage extends StatelessWidget {
             title: Text('Are you sure?'),
             content: Text('This action cannnot be undone!'),
             actions: <Widget>[
-              FlatButton(
-                child: Text('DISCARD'),
+              IconButton(
+                icon: Icon(Icons.close),
+                iconSize: 29.0,
                 onPressed: () {
                   Navigator.pop(context); //close alert
                 },
               ),
-              FlatButton(
-                  child: Text('DELETE'),
+              IconButton(
+                  icon: Icon(Icons.delete_forever),
                   onPressed: () {
                     Navigator.pop(context); //close alert
                     Navigator.pop(context, true); //deletetrue
@@ -44,7 +46,7 @@ class ProductPage extends StatelessWidget {
         return Future.value(false); //allow the user to leave
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColorLight,
+        backgroundColor: Colors.white.withOpacity(0.9),
         appBar: AppBar(
           title: Text(this.title),
         ),
@@ -55,17 +57,48 @@ class ProductPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment
                 .center, //solo funcionara con el widget center como padre pq sino no tiene un width establecido
             children: <Widget>[
-              Image.asset(this.imageUrl),
-              Container(padding: EdgeInsets.all(10.0), child: Text(this.title)),
+              Container(
+                child: Image.asset(this.imageUrl),
+                padding: EdgeInsets.all(10.0),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(this.title, style: TextStyle(fontSize: 20.0)),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      this.description,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.black.withOpacity(0.7)),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Palau Solita, Barcelona',
+                    style: TextStyle(fontSize: 13.0, fontFamily: 'Oswald'),
+                  ),
+                  Container(child: Text('|',style: TextStyle(fontFamily: 'Oswald',color: Colors.black.withOpacity(0.7)),),margin: EdgeInsets.symmetric(horizontal: 5.0),),
+                  Text('\$ 21'),
+                ],
+              ),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
-                FlatButton(
-                  child: Text('BACK'),
+                IconButton(
+                  icon: Icon(Icons.backspace),
                   onPressed: () => Navigator.pop(
                       context), //pop para quitar del stack y push para añadir
                 ),
-                FlatButton(
-                  child: Text("DELETE"),
-                  onPressed: () => _showWarningDialog(//wraper in other funcion - es decir crea otra funcion para que llame esta
+                IconButton(
+                  iconSize: 30.0,
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _showWarningDialog(
+                      //wraper in other funcion - es decir crea otra funcion para que llame esta
                       context), // si ponemos llamamos funcion() se ejecutara imediatament y solo queremos cuando
                 ),
               ])
