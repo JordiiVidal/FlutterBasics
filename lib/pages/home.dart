@@ -6,10 +6,8 @@ class HomePage extends StatelessWidget {
   
   HomePage(this.products);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(
+  Widget _buildSideDrawer(BuildContext context){
+    return Drawer(
         //drawwer left side - endrawer right side / Multiple items use scrollable
         child: Column(
           children: <Widget>[
@@ -25,7 +23,13 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-      ),
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: _buildSideDrawer(context),
       appBar: AppBar(
         title: Text('BuyList'),
         actions: <Widget>[

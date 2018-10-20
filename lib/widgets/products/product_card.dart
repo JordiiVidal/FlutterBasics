@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'price_tag.dart';
+import '../ui_elements/title_default.dart';
+import 'adress_tag.dart';
 
-class ProductCard extends StatelessWidget{
-
+class ProductCard extends StatelessWidget {
   final Map<String, dynamic> product;
   final int productIndex;
 
   ProductCard(this.product, this.productIndex);
 
   @override
-    Widget build(BuildContext context) {
-      // TODO: implement build
+  Widget build(BuildContext context) {
+    // TODO: implement build
     return Card(
       color: Colors.white.withOpacity(0.7),
       margin: EdgeInsets.all(10.0),
@@ -25,13 +26,7 @@ class ProductCard extends StatelessWidget{
               children: <Widget>[
                 Flexible(
                   flex: 2,
-                  child: Text(
-                    product['title'],
-                    style: TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Oswald'),
-                  ),
+                  child: TitleDefault(product['title']),
                 ),
                 Expanded(
                   flex: 3,
@@ -40,16 +35,7 @@ class ProductCard extends StatelessWidget{
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1.5),
-                borderRadius: BorderRadius.circular(9.0)),
-            child: Text(
-              'Palau Solita, Barcelona',
-              style: TextStyle(fontSize: 13.0),
-            ),
-          ),
+          AdressTag('Rio Janeiro, Brasil'),
           ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
             IconButton(
               //button without cbackground only text
@@ -69,6 +55,6 @@ class ProductCard extends StatelessWidget{
           ]) //Multiple buttons size by size
         ],
       ),
-    );                                                                 
-    }
+    );
+  }
 }

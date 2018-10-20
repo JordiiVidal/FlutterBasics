@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import '../widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
   final String title;
@@ -34,6 +35,27 @@ class ProductPage extends StatelessWidget {
         });
   }
 
+  Widget _buildAdressPriceRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'Palau Solita, Barcelona',
+          style: TextStyle(fontSize: 13.0, fontFamily: 'Oswald'),
+        ),
+        Container(
+          child: Text(
+            '|',
+            style: TextStyle(
+                fontFamily: 'Oswald', color: Colors.black.withOpacity(0.7)),
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+        ),
+        Text('\$ 21'),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -65,7 +87,7 @@ class ProductPage extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 child: Column(
                   children: <Widget>[
-                    Text(this.title, style: TextStyle(fontSize: 20.0)),
+                    TitleDefault(title),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -77,17 +99,7 @@ class ProductPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Palau Solita, Barcelona',
-                    style: TextStyle(fontSize: 13.0, fontFamily: 'Oswald'),
-                  ),
-                  Container(child: Text('|',style: TextStyle(fontFamily: 'Oswald',color: Colors.black.withOpacity(0.7)),),margin: EdgeInsets.symmetric(horizontal: 5.0),),
-                  Text('\$ 21'),
-                ],
-              ),
+              _buildAdressPriceRow(),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.backspace),

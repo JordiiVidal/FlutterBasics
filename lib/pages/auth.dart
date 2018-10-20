@@ -15,6 +15,66 @@ class _AuthPage extends State<AuthPage> {
   String _pswdValue;
   bool _acceptTerms = false;
 
+  DecorationImage _buildBackgroundImage() {
+    return DecorationImage(
+      fit: BoxFit.cover, //zoom
+      colorFilter:
+          ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+      image: AssetImage('assets/background.jpg'),
+    );
+  }
+
+  Widget _buildEmailTextField() {
+    return TextField(
+      decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          /*icon: Icon(Icons.link)*/ labelText: 'E-mail'),
+      keyboardType: TextInputType.emailAddress,
+      onChanged: (String value) {
+        setState(() {
+          _emailValue = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildPasswordTextField() {
+    return TextField(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        labelText: 'Password',
+      ),
+      obscureText: true,
+      onChanged: (String value) {
+        setState(() {
+          _pswdValue = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildAcceptSwitch() {
+    return SwitchListTile(
+      title: Text('Accept Terms'),
+      value: _acceptTerms,
+      activeColor: Colors.pink,
+      onChanged: (bool value) {
+        setState(() {
+          _acceptTerms = value;
+        });
+      },
+    );
+  }
+
+  void _submitForm() {
+    print(_pswdValue);
+    print(_emailValue);
+    Navigator.pushReplacementNamed(context, '/products');
+    //Navigator siempre que se quiera cambiar de pagina(always)
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -23,47 +83,17 @@ class _AuthPage extends State<AuthPage> {
         title: Text('Login'),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover, //zoom
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.2), BlendMode.dstATop),
-            image: AssetImage('assets/background.jpg'),
-          ),
-        ),
+        decoration: BoxDecoration(image: _buildBackgroundImage()),
         padding: EdgeInsets.all(10.0),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                TextField(
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      /*icon: Icon(Icons.link)*/ labelText: 'E-mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (String value) {
-                    setState(() {
-                      _emailValue = value;
-                    });
-                  },
-                ),
+                _buildEmailTextField(),
                 SizedBox(
                   height: 10.0,
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Password',
-                  ),
-                  obscureText: true,
-                  onChanged: (String value) {
-                    setState(() {
-                      _pswdValue = value;
-                    });
-                  },
-                ),
+                _buildPasswordTextField(),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -73,16 +103,7 @@ class _AuthPage extends State<AuthPage> {
                   activeTrackColor: Colors.grey,
                   onChanged: (bool value) {},
                 ),
-                SwitchListTile(
-                  title: Text('Accept Terms'),
-                  value: _acceptTerms,
-                  activeColor: Colors.pink,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _acceptTerms = value;
-                    });
-                  },
-                ),
+                _buildAcceptSwitch(),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -90,12 +111,7 @@ class _AuthPage extends State<AuthPage> {
                   color: Theme.of(context).primaryColorDark,
                   textColor: Colors.white,
                   child: Text('login'),
-                  onPressed: () {
-                    //Navigator siempre que se quiera cambiar de pagina(always)
-                    print(_pswdValue);
-                    print(_emailValue);
-                    Navigator.pushReplacementNamed(context, '/products');
-                  },
+                  onPressed: _submitForm,
                 )
               ],
             ),

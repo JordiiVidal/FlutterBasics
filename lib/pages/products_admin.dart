@@ -8,14 +8,9 @@ class ProductsAdminPage extends StatelessWidget {
   final Function deleteProduct;
 
   ProductsAdminPage (this.addProduct,this.deleteProduct);
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return DefaultTabController(
-      //TAB TOP PAGE
-      length: 3,
-      child: Scaffold(
-        drawer: Drawer(
+
+  Widget _buldSideDrawer( BuildContext context){
+    return Drawer(
           child: Column(
             children: <Widget>[
               AppBar(
@@ -29,7 +24,16 @@ class ProductsAdminPage extends StatelessWidget {
               )
             ],
           ),
-        ),
+        );
+  }
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return DefaultTabController(
+      //TAB TOP PAGE
+      length: 3,
+      child: Scaffold(
+        drawer: _buldSideDrawer(context),
         appBar: AppBar(
           title: Text('User'),
           bottom: TabBar(
