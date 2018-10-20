@@ -7,7 +7,7 @@ import './pages/auth.dart';
 import 'package:flutter/rendering.dart';
 
 void main() {
-    /*debugPaintSizeEnabled = true;//whitout debugging
+  /*debugPaintSizeEnabled = true;//whitout debugging
     debugPaintBaselinesEnabled = true;
     debugPaintPointersEnabled = true;
     debugPaintSizeEnabled = true;*/
@@ -47,14 +47,18 @@ class _MyAppState extends State<MyApp> {
       //debugShowMaterialGrid: true,//tool grid for design
       theme: ThemeData(
         fontFamily: 'Oswald',
-          brightness: Brightness.light, //default exists dark
-          primarySwatch: Colors.deepOrange, //static properties
-          accentColor: Colors.purple),
+        brightness: Brightness.light, //default exists dark
+        primarySwatch: Colors.deepOrange, //static properties
+        accentColor: Colors.deepPurple,
+        buttonColor: Colors.red,
+      ),
       //home: AuthPage(), Home argunment la pagina que primero veremos la podemos cambiar por la ruta /
       routes: {
-        '/': (BuildContext context) => AuthPage(), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
-        '/products': (BuildContext context) => HomePage(_products), 
-        '/admin': (BuildContext context) => ProductsAdminPage(_addProduct,_deleteProduct),
+        '/': (BuildContext context) =>
+            AuthPage(), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
+        '/products': (BuildContext context) => HomePage(_products),
+        '/admin': (BuildContext context) =>
+            ProductsAdminPage(_addProduct, _deleteProduct),
       }, //executed whemn we navigate to a named rout solo se ejecutara cuando no este en el registro routes
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
@@ -66,12 +70,15 @@ class _MyAppState extends State<MyApp> {
           final int index = int.parse(pathElements[2]); // /products/1
           return MaterialPageRoute<bool>(
             builder: (BuildContext context) => ProductPage(
-                _products[index]['title'], _products[index]['image'],_products[index]['description']),
+                _products[index]['title'],
+                _products[index]['image'],
+                _products[index]['description']),
           );
         }
-      },//Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui
+      }, //Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui
       onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(builder: (BuildContext context) => HomePage(_products));
+        return MaterialPageRoute(
+            builder: (BuildContext context) => HomePage(_products));
       },
     );
   }

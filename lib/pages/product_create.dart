@@ -62,21 +62,23 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
       'image': 'assets/richarlison.jpg'
     };
     widget.addProduct(product);
-    Navigator.pushReplacementNamed(context, '/roducts');
+    Navigator.pushReplacementNamed(context, '/products');
   }
 
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final Orientation deviceOrientation = MediaQuery.of(context).orientation;
-    final targetWidthO = deviceOrientation == Orientation.landscape ? 200.0 : 500.0;//IF / ELSE
-    final targetWidth =  deviceWidth > 550.0 ? 500.0 :  deviceWidth * 0.95 ;
+    final targetWidthO =
+        deviceOrientation == Orientation.landscape ? 200.0 : 500.0; //IF / ELSE
+    final targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
     // TODO: implement build
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: ListView(//always take all size ->
-        padding: EdgeInsets.symmetric(horizontal: targetPadding/2),
+      child: ListView(
+        //always take all size ->
+        padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
         children: <Widget>[
           //autofocus que cuando se inicialize la page salga el teclado
           //onCganged trigger que cada vez que cambia
@@ -86,12 +88,20 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
           SizedBox(
             height: 10.0,
           ),
-          RaisedButton(
+          /*RaisedButton(
             child: Text('SAVE'),
-            color: Theme.of(context).primaryColor,
             textColor: Colors.white,
             onPressed: _submitForm,//only reference executed if you click that button
+          ),*/
+          GestureDetector(
+            onTap: _submitForm,
+            child: Container(
+              color: Colors.green,
+              padding: EdgeInsets.all(5.0),
+              child: Text('Mybuton'),
+            ),
           ),
+
           //Text(titleValue),
         ],
       ),
