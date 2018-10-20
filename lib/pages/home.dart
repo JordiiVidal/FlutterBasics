@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../product_manager.dart';
+import '../widgets/products/products.dart';
 
 class HomePage extends StatelessWidget {
   final List<Map<String,dynamic>> products;
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: ProductManager(products),
+      body: Products(products),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
