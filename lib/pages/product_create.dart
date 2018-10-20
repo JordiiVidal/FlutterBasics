@@ -67,10 +67,16 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final Orientation deviceOrientation = MediaQuery.of(context).orientation;
+    final targetWidthO = deviceOrientation == Orientation.landscape ? 200.0 : 500.0;//IF / ELSE
+    final targetWidth =  deviceWidth > 550.0 ? 500.0 :  deviceWidth * 0.95 ;
+    final double targetPadding = deviceWidth - targetWidth;
     // TODO: implement build
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: ListView(
+      child: ListView(//always take all size ->
+        padding: EdgeInsets.symmetric(horizontal: targetPadding/2),
         children: <Widget>[
           //autofocus que cuando se inicialize la page salga el teclado
           //onCganged trigger que cada vez que cambia
