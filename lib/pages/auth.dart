@@ -77,6 +77,14 @@ class _AuthPage extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final Orientation deviceOrientation = MediaQuery.of(context).orientation;
+    final targetWidthO = deviceOrientation == Orientation.landscape ? 200.0 : 500.0;//IF / ELSE
+    final targetWidth =  deviceWidth >550.0 ? 500.0 :  deviceWidth * 0.95 ;
+    /*IF(DEVICEWidth > 550){
+      return Scaff
+    }else{return scaffodld2}*/      
+    
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -87,33 +95,37 @@ class _AuthPage extends State<AuthPage> {
         padding: EdgeInsets.all(10.0),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                _buildEmailTextField(),
-                SizedBox(
-                  height: 10.0,
-                ),
-                _buildPasswordTextField(),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Switch(
-                  value: true,
-                  activeColor: Colors.pink,
-                  activeTrackColor: Colors.grey,
-                  onChanged: (bool value) {},
-                ),
-                _buildAcceptSwitch(),
-                SizedBox(
-                  height: 20.0,
-                ),
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Colors.white,
-                  child: Text('login'),
-                  onPressed: _submitForm,
-                )
-              ],
+            child: Container(
+              width: targetWidth,
+              //width: MediaQuery.of(context).size.width * 0.8,//80%
+              child: Column(
+                children: <Widget>[
+                  _buildEmailTextField(),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  _buildPasswordTextField(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Switch(
+                    value: true,
+                    activeColor: Colors.pink,
+                    activeTrackColor: Colors.grey,
+                    onChanged: (bool value) {},
+                  ),
+                  _buildAcceptSwitch(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  RaisedButton(
+                    color: Theme.of(context).primaryColorDark,
+                    textColor: Colors.white,
+                    child: Text('login'),
+                    onPressed: _submitForm,
+                  )
+                ],
+              ),
             ),
           ),
         ),
