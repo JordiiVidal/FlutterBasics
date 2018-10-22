@@ -14,54 +14,86 @@ class ProductCreatPage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatPage> {
-  String _titleValue;
-  String _descriptionValue;
-  double _priceValue = 0.0;
+  
+  final Map<String,dynamic> _formData = {
+    'title':'',
+    'description':'',
+    'price':null,
+    'image': 'assets/richarlison.jpg'
+  };
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitleTextField() {
-    return TextField(
+    return TextFormField(
+      autovalidate: true,
+      validator: (String value) {
+        //si es valido  return nothing
+        /*if(value.trim().length == 0){//excess espacio entre caracteres, significa que esta vacio
+          return 'Title is required';
+        }*/
+        if (value.isEmpty || value.length < 5) {
+          return 'Title is required and should be 5+ characteres long';
+        }
+      },
       decoration: InputDecoration(
           /*icon: Icon(Icons.link)*/ labelText: 'Product Title'),
-      onChanged: (String value) {
+      /*onChanged: (String value) {//textfield
         setState(() {
           _titleValue = value;
         });
+      },*/
+      onSaved: (String argument) {
+
+          _formData['title'] = argument;
+
       },
     );
   }
 
   Widget _buildDescriptionTextFied() {
-    return TextField(
+    return TextFormField(
+      autovalidate: true,
+      validator: (String value) {
+        if (value.isEmpty || value.length < 10) {
+          return 'Description is reuired and should be 10+ characters long';
+        }
+      },
       maxLines: 3,
       decoration: InputDecoration(labelText: 'Product Description'),
-      onChanged: (String value) {
-        setState(() {
-          _descriptionValue = value;
-        });
+      onSaved: (String argument) {
+          _formData['description'] = argument;
       },
     );
   }
 
   Widget _buildProductPriceTextField() {
-    return TextField(
+    return TextFormField(
+      autovalidate: true,
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+          //si no hace match con number
+          return 'Price is reuired and should be 10+ characters long';
+        }
+      },
       decoration: InputDecoration(labelText: 'Product Price'),
       keyboardType: TextInputType.number,
-      onChanged: (String value) {
-        setState(() {
-          _priceValue = double.parse(value);
-        });
+      onSaved: (String argument) {
+        //setState(() {
+          _formData['price'] = double.parse(argument);
+        //});
       },
     );
   }
 
   _submitForm() {
-    final Map<String, dynamic> product = {
-      'title': _titleValue,
-      'description': _descriptionValue,
-      'price': _priceValue,
-      'image': 'assets/richarlison.jpg'
-    };
-    widget.addProduct(product);
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+    
+    widget.addProduct(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -74,36 +106,44 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
     final targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
     // TODO: implement build
-    return Container(
-      margin: EdgeInsets.all(10.0),
-      child: ListView(
-        //always take all size ->
-        padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-        children: <Widget>[
-          //autofocus que cuando se inicialize la page salga el teclado
-          //onCganged trigger que cada vez que cambia
-          _buildTitleTextField(),
-          _buildDescriptionTextFied(),
-          _buildProductPriceTextField(),
-          SizedBox(
-            height: 10.0,
-          ),
-          /*RaisedButton(
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).requestFocus(FocusNode());//click en el el focus cambiara a uno null haciendo desaparecer el teclado y cualquier cosa abierta
+      },
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            //always take all size ->
+            padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
+            children: <Widget>[
+              //autofocus que cuando se inicialize la page salga el teclado
+              //onCganged trigger que cada vez que cambia
+              _buildTitleTextField(),
+              _buildDescriptionTextFied(),
+              _buildProductPriceTextField(),
+              SizedBox(
+                height: 10.0,
+              ),
+              /*RaisedButton(
             child: Text('SAVE'),
             textColor: Colors.white,
             onPressed: _submitForm,//only reference executed if you click that button
           ),*/
-          GestureDetector(
-            onTap: _submitForm,
-            child: Container(
-              color: Colors.green,
-              padding: EdgeInsets.all(5.0),
-              child: Text('Mybuton'),
-            ),
-          ),
+              GestureDetector(
+                onTap: _submitForm,
+                child: Container(
+                  color: Colors.green,
+                  padding: EdgeInsets.all(5.0),
+                  child: Text('Mybuton'),
+                ),
+              ),
 
-          //Text(titleValue),
-        ],
+              //Text(titleValue),
+            ],
+          ),
+        ),
       ),
     );
   }
