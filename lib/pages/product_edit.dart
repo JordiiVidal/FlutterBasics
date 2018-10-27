@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 
-class ProductCreatPage extends StatefulWidget {
+class ProductEditPage extends StatefulWidget {
   final Function addProduct;
+  final Function updateProduct;
   final Function deleteProduct;
+  final Map<String, dynamic> product;
 
-  ProductCreatPage(this.addProduct, this.deleteProduct);
+  ProductEditPage(
+      {this.addProduct,
+      this.product,
+      this.updateProduct,
+      this.deleteProduct}); //{argument} optional
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _ProductCreatePageState();
+    return _ProductEditPageState();
   }
 }
 
-class _ProductCreatePageState extends State<ProductCreatPage> {
-  
-  final Map<String,dynamic> _formData = {
-    'title':'',
-    'description':'',
-    'price':null,
+class _ProductEditPageState extends State<ProductEditPage> {
+  final Map<String, dynamic> _formData = {
+    'title': '',
+    'description': '',
+    'price': null,
     'image': 'assets/richarlison.jpg'
   };
 
@@ -27,6 +32,7 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
   Widget _buildTitleTextField() {
     return TextFormField(
       autovalidate: true,
+      initialValue: widget.product == null ? "" : widget.product['title'],
       validator: (String value) {
         //si es valido  return nothing
         /*if(value.trim().length == 0){//excess espacio entre caracteres, significa que esta vacio
@@ -44,16 +50,14 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
         });
       },*/
       onSaved: (String argument) {
-
-          _formData['title'] = argument;
-
+        _formData['title'] = argument;
       },
     );
   }
 
   Widget _buildDescriptionTextFied() {
     return TextFormField(
-      autovalidate: true,
+      initialValue: widget.product == null ? "" : widget.product['description'],
       validator: (String value) {
         if (value.isEmpty || value.length < 10) {
           return 'Description is reuired and should be 10+ characters long';
@@ -62,14 +66,14 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
       maxLines: 3,
       decoration: InputDecoration(labelText: 'Product Description'),
       onSaved: (String argument) {
-          _formData['description'] = argument;
+        _formData['description'] = argument;
       },
     );
   }
 
   Widget _buildProductPriceTextField() {
     return TextFormField(
-      autovalidate: true,
+      initialValue: widget.product == null ? "" : widget.product['price'].toString(),
       validator: (String value) {
         if (value.isEmpty ||
             !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
@@ -81,7 +85,7 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
       keyboardType: TextInputType.number,
       onSaved: (String argument) {
         //setState(() {
-          _formData['price'] = double.parse(argument);
+        _formData['price'] = double.parse(argument);
         //});
       },
     );
@@ -92,7 +96,7 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
       return;
     }
     _formKey.currentState.save();
-    
+
     widget.addProduct(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
@@ -101,14 +105,14 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final Orientation deviceOrientation = MediaQuery.of(context).orientation;
-    final targetWidthO =
-        deviceOrientation == Orientation.landscape ? 200.0 : 500.0; //IF / ELSE
+    /*final targetWidthO =
+        deviceOrientation == Orientation.landscape ? 200.0 : 500.0; //IF / ELSE*/
     final targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
-    // TODO: implement build
-    return GestureDetector(
-      onTap: (){
-        FocusScope.of(context).requestFocus(FocusNode());//click en el el focus cambiara a uno null haciendo desaparecer el teclado y cualquier cosa abierta
+    final Widget pageContent = GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(
+            FocusNode()); //click en el el focus cambiara a uno null haciendo desaparecer el teclado y cualquier cosa abierta
       },
       child: Container(
         margin: EdgeInsets.all(10.0),
@@ -146,5 +150,14 @@ class _ProductCreatePageState extends State<ProductCreatPage> {
         ),
       ),
     );
+    // TODO: implement build
+    return widget.product == null //si entramos para crear le pasamos la pagina normal si queremos editar tiene que ser un nuevo scaffold
+        ? pageContent
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('Edit Product'),
+            ),
+            body: pageContent,
+          );
   }
 }

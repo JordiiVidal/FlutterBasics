@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
             AuthPage(), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
         '/products': (BuildContext context) => HomePage(_products),
         '/admin': (BuildContext context) =>
-            ProductsAdminPage(_addProduct, _deleteProduct),
+            ProductsAdminPage(_addProduct, _deleteProduct, _products),
       }, //executed whemn we navigate to a named rout solo se ejecutara cuando no este en el registro routes
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
