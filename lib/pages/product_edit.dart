@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import '../widgets/helpers/ensure-visible.dart';
 
 class ProductEditPage extends StatefulWidget {
   final Function addProduct;
   final Function updateProduct;
   final Function deleteProduct;
   final Map<String, dynamic> product;
+  final int productIndex;
 
   ProductEditPage(
       {this.addProduct,
       this.product,
       this.updateProduct,
-      this.deleteProduct}); //{argument} optional
+      this.deleteProduct,
+      this.productIndex}); //{argument} optional
 
   @override
   State<StatefulWidget> createState() {
@@ -28,66 +31,82 @@ class _ProductEditPageState extends State<ProductEditPage> {
   };
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final _titleFocusNode = FocusNode();
+  final _descFocusNode = FocusNode();
+  final _priceFocusNode = FocusNode();
   Widget _buildTitleTextField() {
-    return TextFormField(
-      autovalidate: true,
-      initialValue: widget.product == null ? "" : widget.product['title'],
-      validator: (String value) {
-        //si es valido  return nothing
-        /*if(value.trim().length == 0){//excess espacio entre caracteres, significa que esta vacio
+    return EnsureVisibleWhenFocused(
+      focusNode: _titleFocusNode,
+      child: TextFormField(
+        focusNode: _titleFocusNode,
+        autovalidate: true,
+        initialValue: widget.product == null ? "" : widget.product['title'],
+        validator: (String value) {
+          //si es valido  return nothing
+          /*if(value.trim().length == 0){//excess espacio entre caracteres, significa que esta vacio
           return 'Title is required';
         }*/
-        if (value.isEmpty || value.length < 5) {
-          return 'Title is required and should be 5+ characteres long';
-        }
-      },
-      decoration: InputDecoration(
-          /*icon: Icon(Icons.link)*/ labelText: 'Product Title'),
-      /*onChanged: (String value) {//textfield
+          if (value.isEmpty || value.length < 5) {
+            return 'Title is required and should be 5+ characteres long';
+          }
+        },
+        decoration: InputDecoration(
+            /*icon: Icon(Icons.link)*/ labelText: 'Product Title'),
+        /*onChanged: (String value) {//textfield
         setState(() {
           _titleValue = value;
         });
       },*/
-      onSaved: (String argument) {
-        _formData['title'] = argument;
-      },
+        onSaved: (String argument) {
+          _formData['title'] = argument;
+        },
+      ),
     );
   }
 
   Widget _buildDescriptionTextFied() {
-    return TextFormField(
-      initialValue: widget.product == null ? "" : widget.product['description'],
-      validator: (String value) {
-        if (value.isEmpty || value.length < 10) {
-          return 'Description is reuired and should be 10+ characters long';
-        }
-      },
-      maxLines: 3,
-      decoration: InputDecoration(labelText: 'Product Description'),
-      onSaved: (String argument) {
-        _formData['description'] = argument;
-      },
+    return EnsureVisibleWhenFocused(
+      focusNode: _descFocusNode,
+      child: TextFormField(
+        focusNode: _descFocusNode,
+        initialValue:
+            widget.product == null ? "" : widget.product['description'],
+        validator: (String value) {
+          if (value.isEmpty || value.length < 10) {
+            return 'Description is reuired and should be 10+ characters long';
+          }
+        },
+        maxLines: 3,
+        decoration: InputDecoration(labelText: 'Product Description'),
+        onSaved: (String argument) {
+          _formData['description'] = argument;
+        },
+      ),
     );
   }
 
   Widget _buildProductPriceTextField() {
-    return TextFormField(
-      initialValue: widget.product == null ? "" : widget.product['price'].toString(),
-      validator: (String value) {
-        if (value.isEmpty ||
-            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
-          //si no hace match con number
-          return 'Price is reuired and should be 10+ characters long';
-        }
-      },
-      decoration: InputDecoration(labelText: 'Product Price'),
-      keyboardType: TextInputType.number,
-      onSaved: (String argument) {
-        //setState(() {
-        _formData['price'] = double.parse(argument);
-        //});
-      },
+    return EnsureVisibleWhenFocused(
+      focusNode: _priceFocusNode,
+      child: TextFormField(
+        focusNode: _priceFocusNode,
+        initialValue:
+            widget.product == null ? "" : widget.product['price'].toString(),
+        validator: (String value) {
+          if (value.isEmpty ||
+              !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+            //si no hace match con number
+            return 'Price is reuired and should be 10+ characters long';
+          }
+        },
+        decoration: InputDecoration(labelText: 'Product Price'),
+        keyboardType: TextInputType.number,
+        onSaved: (String argument) {
+          //setState(() {
+          _formData['price'] = double.parse(argument);
+          //});
+        },
+      ),
     );
   }
 
@@ -96,8 +115,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
       return;
     }
     _formKey.currentState.save();
+    if (widget.product == null) {
+      widget.addProduct(_formData);
+    } else {
+      widget.updateProduct(widget.productIndex, _formData);
+    }
 
-    widget.addProduct(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -151,7 +174,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
       ),
     );
     // TODO: implement build
-    return widget.product == null //si entramos para crear le pasamos la pagina normal si queremos editar tiene que ser un nuevo scaffold
+    return widget.product ==
+            null //si entramos para crear le pasamos la pagina normal si queremos editar tiene que ser un nuevo scaffold
         ? pageContent
         : Scaffold(
             appBar: AppBar(
