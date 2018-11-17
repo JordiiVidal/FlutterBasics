@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import '../widgets/helpers/ensure-visible.dart';
+import '../models/product.dart';
 
 class ProductEditPage extends StatefulWidget {
   final Function addProduct;
   final Function updateProduct;
   final Function deleteProduct;
-  final Map<String, dynamic> product;
+  final Product product;
   final int productIndex;
 
   ProductEditPage(
@@ -40,7 +41,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       child: TextFormField(
         focusNode: _titleFocusNode,
         autovalidate: true,
-        initialValue: widget.product == null ? "" : widget.product['title'],
+        initialValue: widget.product == null ? "" : widget.product.title,
         validator: (String value) {
           //si es valido  return nothing
           /*if(value.trim().length == 0){//excess espacio entre caracteres, significa que esta vacio
@@ -69,8 +70,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       focusNode: _descFocusNode,
       child: TextFormField(
         focusNode: _descFocusNode,
-        initialValue:
-            widget.product == null ? "" : widget.product['description'],
+        initialValue: widget.product == null ? "" : widget.product.description,
         validator: (String value) {
           if (value.isEmpty || value.length < 10) {
             return 'Description is reuired and should be 10+ characters long';
@@ -91,12 +91,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
       child: TextFormField(
         focusNode: _priceFocusNode,
         initialValue:
-            widget.product == null ? "" : widget.product['price'].toString(),
+            widget.product == null ? "" : widget.product.price.toString(),
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
             //si no hace match con number
-            return 'Price is reuired and should be 10+ characters long';
+            return 'Price is reqired and should be 10+ characters long';
           }
         },
         decoration: InputDecoration(labelText: 'Product Price'),
@@ -110,29 +110,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  _submitForm() {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-    _formKey.currentState.save();
-    if (widget.product == null) {
-      widget.addProduct(_formData);
-    } else {
-      widget.updateProduct(widget.productIndex, _formData);
-    }
-
-    Navigator.pushReplacementNamed(context, '/products');
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPageContent(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final Orientation deviceOrientation = MediaQuery.of(context).orientation;
     /*final targetWidthO =
         deviceOrientation == Orientation.landscape ? 200.0 : 500.0; //IF / ELSE*/
     final targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
-    final Widget pageContent = GestureDetector(
+    return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(
             FocusNode()); //click en el el focus cambiara a uno null haciendo desaparecer el teclado y cualquier cosa abierta
@@ -173,6 +158,37 @@ class _ProductEditPageState extends State<ProductEditPage> {
         ),
       ),
     );
+  }
+
+  _submitForm() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+    if (widget.product == null) {
+      widget.addProduct(Product(
+        title: _formData['title'],
+        description: _formData['description'],
+        price: _formData['price'],
+        image: _formData['image'],
+      ));
+    } else {
+      widget.updateProduct(
+          widget.productIndex,
+          Product(
+            title: _formData['title'],
+            description: _formData['description'],
+            price: _formData['price'],
+            image: _formData['image'],
+          ));
+    }
+
+    Navigator.pushReplacementNamed(context, '/products');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget pageContent = _buildPageContent(context);
     // TODO: implement build
     return widget.product ==
             null //si entramos para crear le pasamos la pagina normal si queremos editar tiene que ser un nuevo scaffold
