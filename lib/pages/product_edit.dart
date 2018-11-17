@@ -5,19 +5,6 @@ import '../scoped-models/products.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductEditPage extends StatefulWidget {
-  final Function addProduct;
-  final Function updateProduct;
-  final Function deleteProduct;
-  final Product product;
-  final int productIndex;
-
-  ProductEditPage(
-      {this.addProduct,
-      this.product,
-      this.updateProduct,
-      this.deleteProduct,
-      this.productIndex}); //{argument} optional
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -37,13 +24,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
   final _titleFocusNode = FocusNode();
   final _descFocusNode = FocusNode();
   final _priceFocusNode = FocusNode();
-  Widget _buildTitleTextField() {
+
+  Widget _buildTitleTextField(Product product) {
     return EnsureVisibleWhenFocused(
       focusNode: _titleFocusNode,
       child: TextFormField(
         focusNode: _titleFocusNode,
         autovalidate: true,
-        initialValue: widget.product == null ? "" : widget.product.title,
+        initialValue: product == null ? "" : product.title,
         validator: (String value) {
           //si es valido  return nothing
           /*if(value.trim().length == 0){//excess espacio entre caracteres, significa que esta vacio
@@ -67,12 +55,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  Widget _buildDescriptionTextFied() {
+  Widget _buildDescriptionTextFied(Product product) {
     return EnsureVisibleWhenFocused(
       focusNode: _descFocusNode,
       child: TextFormField(
         focusNode: _descFocusNode,
-        initialValue: widget.product == null ? "" : widget.product.description,
+        initialValue: product == null ? "" : product.description,
         validator: (String value) {
           if (value.isEmpty || value.length < 10) {
             return 'Description is reuired and should be 10+ characters long';
@@ -87,13 +75,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  Widget _buildProductPriceTextField() {
+  Widget _buildProductPriceTextField(Product product) {
     return EnsureVisibleWhenFocused(
       focusNode: _priceFocusNode,
       child: TextFormField(
         focusNode: _priceFocusNode,
-        initialValue:
-            widget.product == null ? "" : widget.product.price.toString(),
+        initialValue: product == null ? "" : product.price.toString(),
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
@@ -113,19 +100,25 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildSubmitButton() {
-    return ScopedModelDescendant<ProductsModel>(builder: (BuildContext context, Widget widget, ProductsModel model){
-      return GestureDetector(
-      onTap:() => _submitForm(model.addProduct, model.updateProduct),//only is pressed and reference of model function
-      child: Container(
-        color: Colors.green,
-        padding: EdgeInsets.all(5.0),
-        child: Text('Mybuton'),
-      ),
-    ); 
-    },); 
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget widget, ProductsModel model) {
+        return GestureDetector(
+          onTap: () => _submitForm(
+              model.addProduct,
+              model.updateProduct,
+              model
+                  .selectedProductIndex), //only is pressed and reference of model function
+          child: Container(
+            color: Colors.green,
+            padding: EdgeInsets.all(5.0),
+            child: Text('Mybuton'),
+          ),
+        );
+      },
+    );
   }
 
-  Widget _buildPageContent(BuildContext context) {
+  Widget _buildPageContent(BuildContext context, Product product) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final Orientation deviceOrientation = MediaQuery.of(context).orientation;
     /*final targetWidthO =
@@ -147,9 +140,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
             children: <Widget>[
               //autofocus que cuando se inicialize la page salga el teclado
               //onCganged trigger que cada vez que cambia
-              _buildTitleTextField(),
-              _buildDescriptionTextFied(),
-              _buildProductPriceTextField(),
+              _buildTitleTextField(product),
+              _buildDescriptionTextFied(product),
+              _buildProductPriceTextField(product),
               SizedBox(
                 height: 10.0,
               ),
@@ -166,12 +159,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  _submitForm(Function addProduct, Function updateProduct) {
+  _submitForm(Function addProduct, Function updateProduct,
+      [int selectedProductIndex]) {
+    //[optional]
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
-    if (widget.product == null) {
+    if (selectedProductIndex == null) {
       addProduct(Product(
         title: _formData['title'],
         description: _formData['description'],
@@ -180,7 +175,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
       ));
     } else {
       updateProduct(
-          widget.productIndex,
           Product(
             title: _formData['title'],
             description: _formData['description'],
@@ -194,16 +188,21 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget pageContent = _buildPageContent(context);
     // TODO: implement build
-    return widget.product ==
-            null //si entramos para crear le pasamos la pagina normal si queremos editar tiene que ser un nuevo scaffold
-        ? pageContent
-        : Scaffold(
-            appBar: AppBar(
-              title: Text('Edit Product'),
-            ),
-            body: pageContent,
-          );
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget widget, ProductsModel model) {
+        final Widget pageContent =
+            _buildPageContent(context, model.selectedProduct);
+        return model.selectedProductIndex ==
+                null //si entramos para crear le pasamos la pagina normal si queremos editar tiene que ser un nuevo scaffold
+            ? pageContent
+            : Scaffold(
+                appBar: AppBar(
+                  title: Text('Edit Product'),
+                ),
+                body: pageContent,
+              );
+      },
+    );
   }
 }
