@@ -3,7 +3,8 @@ import './pages/products_admin.dart';
 import './pages/home.dart';
 import './pages/product.dart';
 import './pages/auth.dart';
-import './models/product.dart';
+import './scoped-models/products.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'package:flutter/rendering.dart';
 
@@ -25,67 +26,44 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Product> _products = [];
-
-  void _addProduct(Product product) {
-    //use dynamic <dynamic>
-    setState(() {
-      _products.add(product);
-      print(_products);
-    });
-  }
-
-  void _deleteProduct(int index) {
-    setState(() {
-      _products.removeAt(index);
-      print(_products);
-    });
-  }
-  void _updateProduct(int index, Product product){
-    setState(() {
-          _products[index] = product;
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //debugShowMaterialGrid: true,//tool grid for design
-      theme: ThemeData(
-        fontFamily: 'Oswald',
-        brightness: Brightness.light, //default exists dark
-        primarySwatch: Colors.deepOrange, //static properties
-        accentColor: Colors.deepPurple,
-        buttonColor: Colors.red,
+    return ScopedModel<ProductsModel>(
+      model: ProductsModel(),//call constructor
+      child: MaterialApp(
+        //debugShowMaterialGrid: true,//tool grid for design
+        theme: ThemeData(
+          fontFamily: 'Oswald',
+          brightness: Brightness.light, //default exists dark
+          primarySwatch: Colors.deepOrange, //static properties
+          accentColor: Colors.deepPurple,
+          buttonColor: Colors.red,
+        ),
+        //home: AuthPage(), Home argunment la pagina que primero veremos la podemos cambiar por la ruta /
+        routes: {
+          '/': (BuildContext context) =>
+              AuthPage(), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
+          '/products': (BuildContext context) => HomePage(),
+          '/admin': (BuildContext context) => ProductsAdminPage(),
+        }, //executed whemn we navigate to a named rout solo se ejecutara cuando no este en el registro routes
+        onGenerateRoute: (RouteSettings settings) {
+          final List<String> pathElements = settings.name.split('/');
+          if (pathElements[0] != '') {
+            return null; //invalid name por lo tanto no va hacer load de una nueva page
+          }
+          if (pathElements[1] == 'product') {
+            //directorio /products list of all products
+            final int index = int.parse(pathElements[2]); // /products/1
+            return MaterialPageRoute<bool>(
+              builder: (BuildContext context) => ProductPage(index),
+            );
+          }
+        }, //Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui
+        onUnknownRoute: (RouteSettings settings) {
+          return MaterialPageRoute(
+              builder: (BuildContext context) => HomePage());
+        },
       ),
-      //home: AuthPage(), Home argunment la pagina que primero veremos la podemos cambiar por la ruta /
-      routes: {
-        '/': (BuildContext context) =>
-            AuthPage(), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
-        '/products': (BuildContext context) => HomePage(_products),
-        '/admin': (BuildContext context) =>
-            ProductsAdminPage(_addProduct, _updateProduct, _deleteProduct, _products),
-      }, //executed whemn we navigate to a named rout solo se ejecutara cuando no este en el registro routes
-      onGenerateRoute: (RouteSettings settings) {
-        final List<String> pathElements = settings.name.split('/');
-        if (pathElements[0] != '') {
-          return null; //invalid name por lo tanto no va hacer load de una nueva page
-        }
-        if (pathElements[1] == 'product') {
-          //directorio /products list of all products
-          final int index = int.parse(pathElements[2]); // /products/1
-          return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(
-                _products[index].title,
-                _products[index].image,
-                _products[index].description),
-          );
-        }
-      }, //Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui
-      onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(
-            builder: (BuildContext context) => HomePage(_products));
-      },
     );
   }
 }

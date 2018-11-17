@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/products/products.dart';
-import '../models/product.dart';
 
 class HomePage extends StatelessWidget {
-  final List<Product> products;
-  
-  HomePage(this.products);
-
   Widget _buildSideDrawer(BuildContext context){
     return Drawer(
         //drawwer left side - endrawer right side / Multiple items use scrollable
@@ -40,7 +35,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Products(products),
+      body: Products(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
