@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/helpers/ensure-visible.dart';
 import '../models/product.dart';
-import '../scoped-models/products.dart';
+import '../scoped-models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductEditPage extends StatefulWidget {
@@ -100,8 +100,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildSubmitButton() {
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget widget, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget widget, MainModel model) {
         return GestureDetector(
           onTap: () => _submitForm(
               model.addProduct,
@@ -189,8 +189,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget widget, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget widget, MainModel model) {
         final Widget pageContent =
             _buildPageContent(context, model.selectedProduct);
         return model.selectedProductIndex ==

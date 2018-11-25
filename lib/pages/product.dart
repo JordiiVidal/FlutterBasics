@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../widgets/ui_elements/title_default.dart';
-import '../scoped-models/products.dart';
+import '../scoped-models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../models/product.dart';
 
@@ -67,8 +67,8 @@ class ProductPage extends StatelessWidget {
       Navigator.pop(context,
           false); //damos permiso para que el usuario tire para atras cuando le de al backbutton delmob y ademas decidimos si true o false , en este caso no queremos que se elimine el product
       return Future.value(false); //allow the user to leave
-    }, child: ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget widget, ProductsModel model) {
+    }, child: ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget widget, MainModel model) {
         final Product product = model.products[productIndex];
         return Scaffold(
           backgroundColor: Colors.white.withOpacity(0.9),

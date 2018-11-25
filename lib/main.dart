@@ -3,7 +3,7 @@ import './pages/products_admin.dart';
 import './pages/home.dart';
 import './pages/product.dart';
 import './pages/auth.dart';
-import './scoped-models/products.dart';
+import './scoped-models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'package:flutter/rendering.dart';
@@ -28,8 +28,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ProductsModel>(
-      model: ProductsModel(),//call constructor
+    return ScopedModel<MainModel>(
+      model: MainModel(),//call constructor
       child: MaterialApp(
         //debugShowMaterialGrid: true,//tool grid for design
         theme: ThemeData(
