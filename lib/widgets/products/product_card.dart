@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
+import 'package:scoped_model/scoped_model.dart';
+
 import 'price_tag.dart';
 import '../ui_elements/title_default.dart';
 import 'adress_tag.dart';
 import '../../models/product.dart';
+import '../../scoped-models/products.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -48,10 +52,20 @@ class ProductCard extends StatelessWidget {
                       productIndex
                           .toString()), //use => one line code //navigation es como un stack que tienes que hacer push del scaffold para poder vnavegar
             ),
-            IconButton(
-              icon: Icon(Icons.star_border),
-              color: Colors.red,
-              onPressed: () => {},
+            ScopedModelDescendant<ProductsModel>(
+              builder:
+                  (BuildContext context, Widget child, ProductsModel model) {
+                return IconButton(
+                  icon: Icon(model.products[productIndex].isfavorite
+                      ? Icons.favorite
+                      : Icons.favorite_border),
+                  color: Colors.red,
+                  onPressed: () {
+                    model.selectProduct(productIndex);
+                    model.favoriteStatus();
+                  },
+                );
+              },
             )
           ]) //Multiple buttons size by size
         ],
