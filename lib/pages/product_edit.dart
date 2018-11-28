@@ -106,6 +106,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
           onTap: () => _submitForm(
               model.addProduct,
               model.updateProduct,
+              model.selectProduct,
               model
                   .selectedProductIndex), //only is pressed and reference of model function
           child: Container(
@@ -159,7 +160,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  _submitForm(Function addProduct, Function updateProduct,
+  _submitForm(Function addProduct, Function updateProduct,Function selectedProduct,
       [int selectedProductIndex]) {
     //[optional]
     if (!_formKey.currentState.validate()) {
@@ -170,19 +171,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
       addProduct(
         _formData['title'],
         _formData['description'],
-        _formData['price'],
         _formData['image'],
+        _formData['price'],
       );
     } else {
       updateProduct(
             _formData['title'],
             _formData['description'],
-            _formData['price'],
             _formData['image'],
+            _formData['price'],
           );
     }
 
-    Navigator.pushReplacementNamed(context, '/products');
+    Navigator.pushReplacementNamed(context, '/products').then((_) => selectedProduct(null));
   }
 
   @override

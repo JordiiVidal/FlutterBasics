@@ -69,7 +69,7 @@ class ProductPage extends StatelessWidget {
       return Future.value(false); //allow the user to leave
     }, child: ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget widget, MainModel model) {
-        final Product product = model.products[productIndex];
+        final Product product = model.allProducts[productIndex];
         return Scaffold(
           backgroundColor: Colors.white.withOpacity(0.9),
           appBar: AppBar(

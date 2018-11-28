@@ -29,7 +29,7 @@ class ProductListPage extends StatelessWidget {
         return ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Dismissible(
-              key: Key(model.products[index].title),
+              key: Key(model.allProducts[index].title),
               background: Container(
                 color: Colors.blue,
               ),

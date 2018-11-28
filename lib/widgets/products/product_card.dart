@@ -57,7 +57,7 @@ class ProductCard extends StatelessWidget {
               builder:
                   (BuildContext context, Widget child, MainModel model) {
                 return IconButton(
-                  icon: Icon(model.products[productIndex].isfavorite
+                  icon: Icon(model.allProducts[productIndex].isfavorite
                       ? Icons.favorite
                       : Icons.favorite_border),
                   color: Colors.red,
