@@ -1,63 +1,59 @@
 import 'package:scoped_model/scoped_model.dart';
 import '../models/product.dart';
+import 'connected_product.dart';
 
-class ProductsModel extends Model {
-  List<Product> _products = []; //this instance is stored in momeory
+class ProductsModel extends ConnectedProduct {
+
   bool _showFavorties = false;
-  int _selectedProductIndex;
 
-  List<Product> get products {
+  List<Product> get allProducts {
     return List.from(
-        _products); //retunr and a copy because only exist one slist stored in momery, new pointer
+        products); //retunr and a copy because only exist one slist stored in momery, new pointer
   }
 
   List<Product> get dispalyProducts {
     if (_showFavorties) {
-      return _products.where((Product product)=>product.isfavorite).toList();//solo incluira los products que tengan favorite true 
+      return products.where((Product product)=>product.isfavorite).toList();//solo incluira los products que tengan favorite true 
     }
-    return List.from(_products);//show all
+    return List.from(products);//show all
   }
 
   int get selectedProductIndex {
-    return _selectedProductIndex;
+    return selProductIndex;
   }
   bool get displayFavorite{
     return _showFavorties;
   }
 
   Product get selectedProduct {
-    if (_selectedProductIndex == null) {
+    if (selectedProductIndex == null) {
       return null;
     }
-    return _products[_selectedProductIndex];
+    return products[selectedProductIndex];
   }
 
-  void addProduct(Product product) {
-    _products.add(product);
-    _selectedProductIndex = null;
-    print(_products);
-    notifyListeners();
-  }
+ 
 
   void deleteProduct() {
-    _products.removeAt(_selectedProductIndex);
-    _selectedProductIndex = null;
-    print(_products);
+    products.removeAt(selectedProductIndex);
+    selProductIndex = null;
+    print(products);
     notifyListeners();
   }
 
-  void updateProduct(Product product) {
-    _products[_selectedProductIndex] = product;
-    _selectedProductIndex = null;
+  void updateProduct(String title, String description, String image, double price) {
+    final Product updateProduct = Product(title: title,description: description,image: image,price: price, userEmail: selectedProduct.userEmail, userId: selectedProduct.userId);
+    products[selectedProductIndex] = updateProduct;
+    selProductIndex = null;
     notifyListeners();
   }
 
   void selectProduct(int index) {
-    _selectedProductIndex = index;
+    selProductIndex = index;
   }
 
   void favoriteStatus() {
-    final Product selectedProduct = _products[_selectedProductIndex];
+    final Product selectedProduct = products[selectedProductIndex];
     final bool isCurrentlyFavorite = selectedProduct.isfavorite;
     final bool newFavoriteStatus = !isCurrentlyFavorite;
     final Product updateProduct = Product(
@@ -66,15 +62,17 @@ class ProductsModel extends Model {
       price: selectedProduct.price,
       image: selectedProduct.image,
       isfavorite: newFavoriteStatus,
+      userEmail: selectedProduct.userEmail,
+      userId: selectedProduct.userId
     );
-    _products[_selectedProductIndex] = updateProduct;
-    _selectedProductIndex = null;
+    products[selectedProductIndex] = updateProduct;
+    selProductIndex = null;
     notifyListeners(); //SETsTATE IN STATELESS WIDGET, re render their builder methods effect this scoped model
   }
 
   void changeFavorite() {
     _showFavorties = !_showFavorties;
-    _selectedProductIndex = null;
+    selProductIndex = null;
     notifyListeners();
   }
 }

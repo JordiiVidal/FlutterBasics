@@ -41,6 +41,7 @@ class ProductCard extends StatelessWidget {
             ),
           ),
           AdressTag('Rio Janeiro, Brasil'),
+          Text(product.userEmail),
           ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
             IconButton(
               //button without cbackground only text
