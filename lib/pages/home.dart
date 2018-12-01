@@ -4,7 +4,24 @@ import '../widgets/products/products.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-models/main.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  final MainModel model;
+
+  HomePage(this.model);
+
+  @override
+    State<StatefulWidget> createState() {
+      // TODO: implement createState
+      return _ProductPageState();
+    }
+}
+class _ProductPageState extends State<HomePage>{
+  @override//when render for the first time, page loaded 
+  initState(){
+    widget.model.fetchProducts();
+    super.initState();
+
+  }
   Widget _buildSideDrawer(BuildContext context) {
     return Drawer(
       //drawwer left side - endrawer right side / Multiple items use scrollable
@@ -32,28 +49,20 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('BuyList'),
         actions: <Widget>[
-          ScopedModelDescendant<MainModel>(builder:
-              (BuildContext context, Widget widget,MainModel model) {
+          ScopedModelDescendant<MainModel>(
+              builder: (BuildContext context, Widget widget, MainModel model) {
             return IconButton(
-              icon: Icon(model.displayFavorite ? Icons.favorite : Icons.favorite_border),
+              icon: Icon(model.displayFavorite
+                  ? Icons.favorite
+                  : Icons.favorite_border),
               onPressed: () {
-                  model.changeFavorite();
+                model.changeFavorite();
               },
             );
           }),
         ],
       ),
-      body: Products(),//load de todos los products
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
-        onPressed: () {},
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.yellow,
-        child: Container(height: 50.0),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      body: Products(), //load de todos los products
     );
   }
 }

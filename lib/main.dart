@@ -26,10 +26,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final MainModel model = MainModel();
   @override
   Widget build(BuildContext context) {
     return ScopedModel<MainModel>(
-      model: MainModel(),//call constructor
+      model: model,//call constructor
       child: MaterialApp(
         //debugShowMaterialGrid: true,//tool grid for design
         theme: ThemeData(
@@ -43,7 +44,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           '/': (BuildContext context) =>
               AuthPage(), //homeroute,(home argument) cuando se haga el login no queremos que nos salga otra vez la pagina de login
-          '/products': (BuildContext context) => HomePage(),
+          '/products': (BuildContext context) => HomePage(model),
           '/admin': (BuildContext context) => ProductsAdminPage(),
         }, //executed whemn we navigate to a named rout solo se ejecutara cuando no este en el registro routes
         onGenerateRoute: (RouteSettings settings) {
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         }, //Cuando no pasa por las routas con nombre y cuando devulve un null el ongenerate llega aqui
         onUnknownRoute: (RouteSettings settings) {
           return MaterialPageRoute(
-              builder: (BuildContext context) => HomePage());
+              builder: (BuildContext context) => HomePage(model));
         },
       ),
     );
