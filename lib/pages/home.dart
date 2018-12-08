@@ -42,6 +42,18 @@ class _ProductPageState extends State<HomePage>{
     );
   }
 
+  Widget _buildProductList(){
+    return ScopedModelDescendant<MainModel>(builder: (BuildContext context, Widget child, MainModel model){
+      Widget content = Center(child: Text('No Porducts'),);
+      if (model.dispalyProducts.length >= 0 && !model.isLoading){
+        content = Products();
+      }else if(model.isLoading){
+        content = Center(child: CircularProgressIndicator());
+      }
+      return content;
+    },);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +74,8 @@ class _ProductPageState extends State<HomePage>{
           }),
         ],
       ),
-      body: Products(), //load de todos los products
+      body: _buildProductList()
+      , //load de todos los products
     );
   }
 }
